@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import bodyParser from "body-parser";
 
 import { MONGODB_URI, DATABASE_NAME } from './utils/app.secrets';
-// import * as routes from './routes';
+import routes from './routes';
 
 const app = express();
 
@@ -35,7 +35,8 @@ app.get("/", (req, res) => {
   });
 });
 
-// app.use(routes);
+app.use(routes);
+
 
 // catch 404 and forward to error handler - fix later
 app.use('*', (req, res, next) => {
@@ -46,14 +47,20 @@ app.use('*', (req, res, next) => {
   next(err);
 });
 
+interface Error {
+  status: number,
+  message: string
+}
 
-// app.use((err, req: Request, res: Response, next: NextFunction) => {
-//   res.status(err.status || 500).json({
-//     errors: {
-//       message: err.message,
-//     },
-//   });
-// });
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  // tslint:disable-next-line:no-console
+  // console.log({ iwashere: err })
+
+  res.status(err.status || 500).json({
+    status: 'error',
+    message: err.message,
+  });
+});
 
 
 export default app;
