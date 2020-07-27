@@ -37,7 +37,7 @@ export const update = async (_id: number, verified: boolean) => {
 
   /**
    * @description update verified column of a user model
-   * @param {object} userObject - { email, password, name, username }
+   * @param {object} userObject - { email, password, name, }
    * @return {Promise} user
    */
 export const create = async (user: IUser ) => {

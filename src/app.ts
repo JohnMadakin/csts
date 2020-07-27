@@ -3,7 +3,7 @@ import path from 'path';
 import mongoose from 'mongoose';
 import bodyParser from "body-parser";
 
-import { MONGODB_URI, DATABASE_NAME } from './utils/app.secrets';
+import { MONGODB_URI } from './utils/app.secrets';
 import routes from './routes';
 
 const app = express();
@@ -11,7 +11,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const connectionString = `${MONGODB_URI}/${DATABASE_NAME}?retryWrites=true&w=majority`;
+const connectionString = `${MONGODB_URI}?retryWrites=true&w=majority`;
 
 mongoose.connect(connectionString, {
   useNewUrlParser: true,
@@ -19,13 +19,14 @@ mongoose.connect(connectionString, {
   useCreateIndex: true,
   useFindAndModify: false,
 })
-  .then((conn) => {
+  .then(async (conn) => {
     // tslint:disable-next-line:no-console
     console.log('Database connection successful');
+
   })
   .catch((err) => {
     // tslint:disable-next-line:no-console
-    console.error('Database connection error');
+    console.error('Database connection error', err);
   });
 
 app.get("/", (req, res) => {
@@ -53,9 +54,6 @@ interface Error {
 }
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  // tslint:disable-next-line:no-console
-  // console.log({ iwashere: err })
-
   res.status(err.status || 500).json({
     status: 'error',
     message: err.message,

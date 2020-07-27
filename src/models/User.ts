@@ -5,6 +5,7 @@ import strippassword from './hooks/strippassword';
 import { UserDocument } from './documents/UserDocument';
 
 import profileSchema from './Profile';
+import roleSchema from './Role';
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -23,6 +24,11 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isBlocked: {
+    type: Boolean,
+    default: false,
+  },
+  role: roleSchema.schema,
   accountVerifyToken: String,
   accountVerifyTokenExpires: Date,
   passwordResetToken: String,

@@ -27,6 +27,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
       email,
       accountVerifyToken: verifyHash,
       accountVerifyTokenExpires: expires,
+      role: { name: 'public_user' },
       password: hashPassword(userPassword),
       name: `${firstName.trim()} ${lastName.trim()}`,
     });
@@ -79,11 +80,17 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       message = 'Email or Password is incorrect';
       return sendErrorResponse({ name: 'LOGIN-ERROR', message, statusCode }, res);
     }
+    if (userFound.isBlocked) {
+      message = 'Sorry, you cannot login at this time';
+      return sendErrorResponse({ name: 'PERM-ERROR', message, statusCode }, res);
+    }
+
 
     const user = userFound.toJSON();
 
     const token = generateToken(user, Number(config.tokenDuration));
     message = 'Login Successful';
+
     return successResponse(res, message, 200, { token });
   } catch (err) {
     return next(err);

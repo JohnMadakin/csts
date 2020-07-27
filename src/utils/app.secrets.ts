@@ -12,7 +12,6 @@ if (fs.existsSync(".env")) {
 }
 
 export const ENVIRONMENT = process.env.NODE_ENV;
-export const DATABASE_NAME = process.env.DATABASE_NAME;
 
 const connectionObject: IConnectionObject = {
   production: process.env.PROD_DB_URI,

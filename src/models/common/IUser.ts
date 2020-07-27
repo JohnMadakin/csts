@@ -3,7 +3,8 @@ export interface IUser {
   verified?: boolean,
   password: string,
   name: string,
-  accountVerifyToken: string,
+  role: IRole,
+  accountVerifyToken?: string,
   accountVerifyTokenExpires?: Date,
   passwordResetToken?: string;
   passwordResetExpires?: Date;
@@ -16,4 +17,8 @@ export interface IProfile {
   location?: string,
   gender?: string,
   imageUrl?: string
+}
+
+export interface IRole {
+  name: string,
 }

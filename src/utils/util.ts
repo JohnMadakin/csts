@@ -1,5 +1,6 @@
 import { Response } from 'express';
-
+import { Parser, AsyncParser } from 'json2csv';
+import { IUserRequest } from '../models/common/IUserRequest';
 
 interface ICustomError extends Error {
   statusCode: number,
@@ -31,7 +32,21 @@ export const sendErrorResponse = (error: ICustomError, res: Response) => {
   const code = statusCode || 500;
 
   res.status(code).json({
-    success: false,
+    status: "error",
     message: `${name.toUpperCase()}: ${message}`,
   });
+}
+
+interface IField {
+  label: string,
+  value: string
+}
+
+export const downloadReports = (res: Response, fileName: string, fields: IField[] , data: IUserRequest[]) => {
+  const json2csv = new Parser ({ fields });
+  const csv = json2csv.parse(data);
+
+  res.header('Content-Type', 'text/csv');
+  res.attachment(fileName);
+  return res.send(csv);
 }
