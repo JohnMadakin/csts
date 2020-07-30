@@ -49,18 +49,21 @@ Follow these steps to set up the project in development mode
 - Setup the database(**_see [database setup](https://www.mongodb.com)_**)
 - Start the application by running
   ```
-  npm run start:dev
+  npm run dev
   ```
-  The application should now be running at `http://127.0.0.1:6000`
+  The application should now be running at `http://127.0.0.1:${port_number}`
 
 #### Database and ODM
-
+- setup the user access control
 - Create a database with `MongoDB Shell` and name it `csts`
+- Setup your username and password
+- Copy the connection string
 - Set the following environment variables in `.env`:
 
   - `DATABASE_NAME` - this is the database name
   - `DEV_DB_URI` - this is the test database connection uri
   - `PROD_DB_URI` - this is the prod database connection uri
+  - `TEST_DB_URI` - this is for test db
 
 - once you start the app, a database connection is setup and database created
 
@@ -69,23 +72,6 @@ Follow these steps to set up the project in development mode
 After setting up your `.env` from the template provided in the `.env.sample` file,
 to use these variables anywhere in the app;
 
-- import the `dotenv` package
-
-```[js]
-import dotenv from 'dotenv'
-```
-
-- Make it available for use as early as possible in that file
-
-```[js]
-dotenv.config()
-```
-
-- Access any variable in the `.env`
-
-```[js]
-process.env.MY_ENV_VARIABLE
-```
 
 ## Testing
 
@@ -95,9 +81,23 @@ process.env.MY_ENV_VARIABLE
 ```
   npm run test 
 ```
+## Assumptions made
 
-## Deployment
+- Multiple roles should be created to indicate type of users.
+- Users would have to verify their email to submit a ticket
+- users can not comment when a ticket is closed
+- Users have to be verified to comment
+- Users who abuse the platform can be blocked
+
+## Requirement not covered
+
+Although not listed, it would have be nice to cover them but for lack of time
+
+- Be able to update passwords
+- Admin should be able to create support staff users
+- Don’t use Parse Object from json2csv… It is synchronous and blocks the node event loop
+- Implement a better seeder algorithm
 
 
-
-
+## Constructive feedback for improving the assignment.
+- You can request the assignment is deployed so it's easy to test 
